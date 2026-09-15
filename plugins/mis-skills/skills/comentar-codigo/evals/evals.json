@@ -1,0 +1,26 @@
+{
+  "skill_name": "comentar-codigo",
+  "evals": [
+    {
+      "id": 0,
+      "name": "python-proyecto-completo",
+      "prompt": "comenta el código para que se entienda qué hace cada parte",
+      "expected_output": "main.py e inventario.py con comentarios breves en español encima de funciones, clase, bucles y condicionales relevantes; datos.json y README.md intactos; lógica sin cambios; resumen final con archivos tocados.",
+      "files": ["fixtures/tienda"]
+    },
+    {
+      "id": 1,
+      "name": "js-archivo-con-comentarios-previos",
+      "prompt": "añade comentarios a src/api.js explicando qué hace cada parte",
+      "expected_output": "Solo src/api.js modificado (utils.js, dist/ y package.json intactos). Sin comentario duplicado encima del JSDoc de fetchUser. El comentario incorrecto de withRetry se conserva y se señala en el resumen. Lógica sin cambios.",
+      "files": ["fixtures/webapp"]
+    },
+    {
+      "id": 2,
+      "name": "bash-peticion-informal",
+      "prompt": "no entiendo este script backup.sh, coméntamelo para que sepa qué hace cada cosa",
+      "expected_output": "backup.sh con comentarios # en español encima de cada bloque (validación de montaje, exclusiones, tar, rotación de copias antiguas, regex). Shebang y set -euo pipefail intactos, lógica sin cambios.",
+      "files": ["fixtures/scripts"]
+    }
+  ]
+}

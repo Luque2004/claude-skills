@@ -1,0 +1,6 @@
+[
+  {"sku": "CAM-0001", "nombre": "Camiseta básica", "stock": 12, "precio": 9.99},
+  {"sku": "PAN-0002", "nombre": "Pantalón vaquero", "stock": 3, "precio": 29.5},
+  {"sku": "ZAP-0003", "nombre": "Zapatillas running", "stock": 0, "precio": 59.0},
+  {"sku": "malo", "nombre": "Producto corrupto", "stock": 5, "precio": 1.0}
+]

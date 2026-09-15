@@ -1,0 +1,8 @@
+{
+  "name": "webapp",
+  "version": "1.0.0",
+  "main": "src/api.js",
+  "scripts": {
+    "build": "esbuild src/api.js --minify --outfile=dist/bundle.min.js"
+  }
+}
