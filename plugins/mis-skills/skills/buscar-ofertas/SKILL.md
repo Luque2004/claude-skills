@@ -16,7 +16,7 @@ Flujo en cuatro fases: **configurar → buscar → cribar → solicitar**. El us
 
 ## 1. Configuración del usuario
 
-Lee `busqueda.json` en la carpeta que indique el usuario (por defecto `~/Desktop/cv-ats/`). Si no existe, créalo preguntando lo mínimo:
+Lee `busqueda.json` en la carpeta que indique el usuario (por defecto `~/Documents/BusquedaEmpleo/`). Si no existe, créalo preguntando lo mínimo:
 
 ```json
 {
