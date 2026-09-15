@@ -4,3 +4,9 @@ Thumbs.db
 node_modules/
 __pycache__/
 .workspace/
+
+# Datos personales de la skill buscar-ofertas (viven fuera del repo)
+busqueda.json
+solicitudes.csv
+ofertas-*.md
+*.pdf

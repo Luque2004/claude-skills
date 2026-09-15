@@ -20,7 +20,7 @@ Lee `busqueda.json` en la carpeta que indique el usuario (por defecto `~/Desktop
 
 ```json
 {
-  "cv": "CV_Max_Luque_ATS.pdf",
+  "cv": "CV_ATS.pdf",
   "puestos": ["desarrollador web junior", "frontend junior", "prácticas desarrollador web"],
   "ubicacion": "Barcelona, Cataluña, España",
   "distancia_km": 40,
