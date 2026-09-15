@@ -5,7 +5,7 @@ Marketplace personal de plugins para [Claude Code](https://docs.claude.com/en/do
 ## Instalar en un dispositivo nuevo
 
 ```bash
-claude plugin marketplace add maxluque/claude-skills
+claude plugin marketplace add Luque2004/claude-skills
 claude plugin install mis-skills@claude-skills
 ```
 
