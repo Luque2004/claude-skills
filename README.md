@@ -9,7 +9,13 @@ claude plugin marketplace add Luque2004/claude-skills
 claude plugin install mis-skills@claude-skills
 ```
 
-Reinicia Claude Code y comprueba que funciona diciendo "hola mundo".
+Abre una sesión nueva de Claude Code y las skills estarán disponibles.
+
+## Skills incluidas
+
+| Skill | Qué hace | Cómo invocarla |
+|---|---|---|
+| `comentar-codigo` | Añade comentarios breves en español encima de cada bloque (funciones, bucles, condicionales…) sin tocar la lógica. Respeta comentarios existentes y avisa de bugs que vea. | "comenta el código", "coméntame `src/api.js`", "no entiendo este script, explícamelo con comentarios" |
 
 ## Actualizar en un dispositivo ya instalado
 
