@@ -16,6 +16,7 @@ Abre una sesión nueva de Claude Code y las skills estarán disponibles.
 | Skill | Qué hace | Cómo invocarla |
 |---|---|---|
 | `comentar-codigo` | Añade comentarios breves en español encima de cada bloque (funciones, bucles, condicionales…) sin tocar la lógica. Respeta comentarios existentes y avisa de bugs que vea. | "comenta el código", "coméntame `src/api.js`", "no entiendo este script, explícamelo con comentarios" |
+| `buscar-ofertas` | Busca ofertas en LinkedIn con tu sesión, las criba leyendo la descripción (años de experiencia, nivel, stack) y presenta solicitudes con "Solicitud sencilla", pidiendo confirmación antes de cada envío. Lee tus criterios de `busqueda.json` y lleva el registro en `solicitudes.csv` (fuera del repo, en tu carpeta de CV). | "busca ofertas junior de web", "aplica a las que encajen", "qué ofertas nuevas hay esta semana" |
 
 ## Actualizar en un dispositivo ya instalado
 
