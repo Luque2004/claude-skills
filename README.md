@@ -17,6 +17,7 @@ Abre una sesión nueva de Claude Code y las skills estarán disponibles.
 |---|---|---|
 | `comentar-codigo` | Añade comentarios breves en español encima de cada bloque (funciones, bucles, condicionales…) sin tocar la lógica. Respeta comentarios existentes y avisa de bugs que vea. | "comenta el código", "coméntame `src/api.js`", "no entiendo este script, explícamelo con comentarios" |
 | `buscar-ofertas` | Busca ofertas en LinkedIn con tu sesión, las criba leyendo la descripción (años de experiencia, nivel, stack) y presenta solicitudes con "Solicitud sencilla", pidiendo confirmación antes de cada envío. Lee tus criterios de `busqueda.json` y lleva el registro en `solicitudes.csv` (fuera del repo, en tu carpeta personal, p. ej. `Documentos\BusquedaEmpleo`). | "busca ofertas junior de web", "aplica a las que encajen", "qué ofertas nuevas hay esta semana" |
+| `builds-champions` | Actualiza las builds de Pokémon Champions del bot de Discord a la regulación vigente: detecta la regulación en metavgc, añade los Pokémon nuevos del roster, quita los que dejan de ser legales, regenera el JSON en inglés y en español y los alias de `Main.py`. Las excepciones se editan en `overrides.json`. | "actualiza las builds", "ha salido regulación nueva", "mete los pokémon nuevos de champions" |
 
 ## Actualizar en un dispositivo ya instalado
 

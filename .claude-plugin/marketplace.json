@@ -11,7 +11,7 @@
       "name": "mis-skills",
       "source": "./plugins/mis-skills",
       "description": "Colección personal de skills de Max Luque.",
-      "version": "0.2.1"
+      "version": "0.3.0"
     }
   ]
 }

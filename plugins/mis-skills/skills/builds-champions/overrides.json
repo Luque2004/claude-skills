@@ -1,0 +1,81 @@
+{
+  "_ayuda": "Excepciones que el script no puede deducir solo. Claves de Pokémon = nombre en PokeAPI. Añade aquí lo que salga bajo REVISAR.",
+  "roster": {
+    "sinonimos": {
+      "Patrat": "Watchog",
+      "Indeedee": "Indeedee Male",
+      "Toxtricity": "Toxtricity Amped"
+    },
+    "omitir": [],
+    "claves": {
+      "Floette": "floette-eternal"
+    },
+    "slug_metavgc": {},
+    "nombres_en": {
+      "Floette": "Eternal Flower Floette",
+      "Maushold": "Maushold (Family of Four)",
+      "Toxtricity Amped": "Toxtricity (Amped Form)",
+      "Toxtricity Low Key": "Toxtricity (Low Key Form)",
+      "Kommo O": "Kommo-o",
+      "Mr Mime": "Mr. Mime",
+      "Mr Mime Galar": "Galarian Mr. Mime",
+      "Mr Rime": "Mr. Rime",
+      "Farfetch'd Galar": "Galarian Farfetch'd"
+    },
+    "nombres_es": {
+      "Eternal Flower Floette": "Floette Flor Eterna",
+      "Maushold (Family of Four)": "Maushold (Familia de Cuatro)",
+      "Toxtricity (Amped Form)": "Toxtricity (Forma Aguda)",
+      "Toxtricity (Low Key Form)": "Toxtricity (Forma Grave)"
+    },
+    "alias_extra": {
+      "indeedee-female": ["indeedee-f"],
+      "indeedee-male": ["indeedee", "indeedee-m"],
+      "toxtricity-amped": ["toxtricity"],
+      "mr-mime": ["mr.mime", "mrmime"],
+      "mr-rime": ["mr.rime", "mrrime"],
+      "farfetchd": ["farfetch'd"],
+      "sirfetchd": ["sirfetch'd"],
+      "kommo-o": ["kommoo"]
+    }
+  },
+  "movimientos": {
+    "_ayuda": "Movimientos [nombre, %] para Pokémon cuya página de metavgc no trae uso de movimientos (fuente: Pikalytics).",
+    "maushold-family-of-four": [["Follow Me", 50.0], ["Protect", 18.3], ["Population Bomb", 17.5], ["Super Fang", 15.0]]
+  },
+  "habilidad_piedra": {
+    "_ayuda": "Habilidad Mega cuando una especie tiene varias piedras y la página solo informa de una.",
+    "Charizardite X": "Tough Claws",
+    "Charizardite Y": "Drought",
+    "Absolite": "Magic Bounce",
+    "Lucarionite": "Adaptability",
+    "Garchompite": "Sand Force"
+  },
+  "traducciones": {
+    "_ayuda": "Nombres en español (España) que PokeAPI no tiene. Verificar en WikiDex.",
+    "item": {
+      "Leek": "Puerro",
+      "Lucarionite Z": "Lucarita Z", "Absolite Z": "Absolita Z", "Garchompite Z": "Garchompita Z",
+      "Raichunite X": "Raichunita X", "Raichunite Y": "Raichunita Y",
+      "Dragoninite": "Dragonita", "Meganiumite": "Meganiumita", "Feraligite": "Feraligatrita", "Emboarite": "Emboarita",
+      "Delphoxite": "Delphoxita", "Chesnaughtite": "Chesnaughtita", "Greninjite": "Greninjanita", "Clefablite": "Clefablita",
+      "Victreebelite": "Victreebelita", "Starminite": "Starmita", "Froslassite": "Froslassita", "Skarmorite": "Skarmorita",
+      "Excadrite": "Excadrillita", "Drampanite": "Drampanita", "Hawluchanite": "Hawluchanita", "Scolipite": "Scolipedita",
+      "Pyroarite": "Pyroarita", "Malamarite": "Malamarita", "Barbaracite": "Barbaraclita", "Dragalgite": "Dragalgita",
+      "Falinksite": "Falinksita", "Eelektrossite": "Eelektrossita", "Staraptite": "Staraptorita", "Scraftinite": "Scraftita",
+      "Glimmoranite": "Glimmoranita", "Chandelurite": "Chandelurita", "Golurkite": "Golurkita", "Chimechite": "Chimechita",
+      "Crabominite": "Crabominablita", "Baxcalibrite": "Baxcaliburita", "Golisopite": "Golisopodita",
+      "Scovillainite": "Scovillainita", "Floettite": "Floettita", "Zoroarkite": "Zoroarkita"
+    },
+    "ability": {
+      "Aura Guard": "Aura Protectora",
+      "Eelevate": "Impulso Anguila",
+      "Fire Mane": "Crin de Fuego"
+    },
+    "move": {
+      "King’s Shield": "Escudo Real",
+      "King's Shield": "Escudo Real"
+    },
+    "nature": {}
+  }
+}
