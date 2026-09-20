@@ -86,6 +86,19 @@ class Ctx:
         self.roster_path = os.path.join(self.cache, "roster.json")
         self.datos_path = os.path.join(self.cache, "mv_data.json")
 
+# Formas regionales: sufijo PokeAPI -> prefijo inglés. En español se escribe igual que la clave
+# ("raichu-alola"), así que no necesita alias.
+REGIONES = {"alola": "alolan", "galar": "galarian", "hisui": "hisuian", "paldea": "paldean"}
+
+def alias_de_clave(clave, ovr):
+    """Alias que se deducen de la clave PokeAPI ('ninetales-alola' -> alolan-ninetales)
+    más los manuales de overrides.roster.alias_extra."""
+    out = set(ovr.get("alias_extra", {}).get(clave, []))
+    for suf, pref_en in REGIONES.items():
+        if clave.endswith("-" + suf):
+            out.add(f"{pref_en}-{clave[:-len(suf) - 1]}")
+    return out
+
 # ----------------------------------------------------------------------------- 1. roster
 
 def regulacion_actual():
@@ -167,12 +180,9 @@ def cmd_roster(ctx):
             continue
         vistos.add(clave)
         slug = slugify(n)
-        aliases = set(ovr.get("alias_extra", {}).get(clave, []))
+        aliases = alias_de_clave(clave, ovr)
         if slug != clave:
             aliases.add(slug)
-        for suf, pref in (("alola", "alolan"), ("galar", "galarian"), ("hisui", "hisuian"), ("paldea", "paldean")):
-            if clave.endswith("-" + suf):
-                aliases.add(f"{pref}-{clave[:-len(suf) - 1]}")
         roster.append({"display": nombre_en(n, ovr), "metavgc": n, "key": clave,
                        "slug": ovr.get("slug_metavgc", {}).get(n, slug), "aliases": sorted(aliases), "via": via})
     # Formas regionales: metavgc lista solo la especie ("Arcanine"), pero Arcanine de Hisui tiene sus propios datos.
@@ -187,7 +197,7 @@ def cmd_roster(ctx):
                 base = p["display"] if "-" not in p["key"] else m.group(1).capitalize()
                 pref = {"alola": "Alolan", "galar": "Galarian", "hisui": "Hisuian", "paldea": "Paldean"}[m.group(2)]
                 out.append({"display": f"{pref} {base}", "metavgc": nombre, "key": nombre, "slug": nombre,
-                            "aliases": [f"{pref.lower()}-{m.group(1)}"], "via": "forma"})
+                            "aliases": sorted(alias_de_clave(nombre, ovr)), "via": "forma"})
         return out
     with ThreadPoolExecutor(8) as ex:
         formas = [f for lista in ex.map(formas_de, list(roster)) for f in lista]
@@ -504,11 +514,12 @@ FIN = "    # --- fin alias builds-champions ---"
 def cmd_aliases(ctx):
     roster = leer_json(ctx.roster_path)["pokemon"]
     d = leer_json(ctx.json_en, {})
+    ovr = ctx.ov.get("roster", {})
     alias = {}
     for p in roster:
         if p["key"] not in d:
             continue
-        for a in p["aliases"]:
+        for a in set(p["aliases"]) | alias_de_clave(p["key"], ovr):
             if a != p["key"]:
                 alias[a] = p["key"]
     lineas = ["    nombre_pokemon = nombre_pokemon.lower()"]

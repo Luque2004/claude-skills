@@ -44,7 +44,7 @@ Reglas de generación: 1-3 builds por Pokémon según muestras (<30 → 1, <200 
 
 5. **Traducir** (`traducir`): escribe el JSON en español con la **misma estructura y las mismas claves** (el bot puede leerlo tal cual). `REVISAR: sin traducción oficial` → busca el nombre en WikiDex (`wikidex.net/wiki/<Nombre>`), añádelo a `traducciones.<tipo>` y repite. Usa nombres de España (PokeAPI no distingue Latinoamérica).
 
-6. **Alias** (`aliases`): regenera los bloques de `Main.py` entre `# --- alias builds-champions ... ---` y `# --- fin alias builds-champions ---` (hay uno por comando). Si el script dice que faltan los marcadores, colócalos tú dentro de cada comando justo antes de usar `nombre_pokemon`, sin borrar los alias manuales del usuario. Comprueba que compila: `py -m py_compile Main.py`.
+6. **Alias** (`aliases`): regenera los bloques de `Main.py` entre `# --- alias builds-champions ... ---` y `# --- fin alias builds-champions ---` (hay uno por comando). Si el script dice que faltan los marcadores, colócalos tú dentro de cada comando justo antes de usar `nombre_pokemon`, sin borrar los alias manuales del usuario. Los alias ingleses de formas regionales salen solos (`alolan-ninetales`; en español se escribe como la clave, `ninetales-alola`); los de otras formas (`indeedee-hembra`, `lycanroc-diurno`, `toxtricity-aguda`…) se mantienen en `overrides.json` → `roster.alias_extra`, y basta ejecutar `aliases` tras editarlo (no hace falta repetir `roster`). Comprueba que compila: `py -m py_compile Main.py`.
 
 7. **Validar** (`validar`): simula la lectura del bot sobre ambos JSON y comprueba que cada clave existe en PokeAPI. No des por terminado el trabajo con errores aquí.
 
