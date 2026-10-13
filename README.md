@@ -11,6 +11,16 @@ claude plugin install mis-skills@claude-skills
 
 Abre una sesión nueva de Claude Code y las skills estarán disponibles.
 
+### Herramientas externas (no forman parte del plugin)
+
+Son de terceros: no se copian a este repo, se instalan con su propio comando.
+
+| Herramienta | Para qué | Instalar |
+|---|---|---|
+| [REA](https://github.com/morluto/rea) | Ingeniería inversa de webs, apps JavaScript/Electron y .NET (servidor MCP + skill `reverse-engineer-anything`). Requiere Node.js 24.11+ y Chrome. | `npx rea-agents@6.4.0 setup` → marcar solo **Claude Code** (con Espacio) → skill: **Yes** → revisar el plan → aplicar → reiniciar Claude Code |
+
+Instalar REA solo desde el comando de npm o desde `morluto/rea`: hay clones falsos con "instaladores".
+
 ## Skills incluidas
 
 | Skill | Qué hace | Cómo invocarla |
