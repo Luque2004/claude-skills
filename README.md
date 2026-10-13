@@ -1,12 +1,18 @@
 # claude-skills
 
-Marketplace personal de plugins para [Claude Code](https://docs.claude.com/en/docs/claude-code). Contiene el plugin `mis-skills`, con todas mis skills, para instalarlas en cualquier dispositivo con dos comandos.
+Marketplace personal de plugins para [Claude Code](https://docs.claude.com/en/docs/claude-code). Contiene el plugin `mis-skills`, con todas mis skills, para instalarlas en cualquier dispositivo con dos comandos, y el plugin experimental `builds-champions-rea`.
 
 ## Instalar en un dispositivo nuevo
 
 ```bash
 claude plugin marketplace add Luque2004/claude-skills
 claude plugin install mis-skills@claude-skills
+```
+
+Opcional, la variante experimental de las builds (convive con `builds-champions`):
+
+```bash
+claude plugin install builds-champions-rea@claude-skills
 ```
 
 Abre una sesión nueva de Claude Code y las skills estarán disponibles.
@@ -28,12 +34,14 @@ Instalar REA solo desde el comando de npm o desde `morluto/rea`: hay clones fals
 | `comentar-codigo` | Añade comentarios breves en español encima de cada bloque (funciones, bucles, condicionales…) sin tocar la lógica. Respeta comentarios existentes y avisa de bugs que vea. | "comenta el código", "coméntame `src/api.js`", "no entiendo este script, explícamelo con comentarios" |
 | `buscar-ofertas` | Busca ofertas en LinkedIn (y en InfoJobs) con tu sesión, las criba leyendo la descripción (años de experiencia, nivel, stack) y presenta solicitudes con "Solicitud sencilla" o inscripción en InfoJobs, pidiendo confirmación antes de cada envío. Lee tus criterios de `busqueda.json` y lleva el registro en `solicitudes.csv` (fuera del repo, en tu carpeta personal, p. ej. `Documentos\BusquedaEmpleo`). | "busca ofertas junior de web", "aplica a las que encajen", "qué ofertas nuevas hay esta semana" |
 | `builds-champions` | Actualiza las builds de Pokémon Champions del bot de Discord a la regulación vigente: detecta la regulación en metavgc, añade los Pokémon nuevos del roster, quita los que dejan de ser legales, regenera el JSON en inglés y en español y los alias de `Main.py`. Las excepciones se editan en `overrides.json`. | "actualiza las builds", "ha salido regulación nueva", "mete los pokémon nuevos de champions" |
+| `builds-champions-rea` *(plugin aparte)* | Copia experimental de `builds-champions`: cuando metavgc da los movimientos al 0 %, los calcula de los equipos de torneo de la propia página en vez de pedirlos a Pikalytics, y si metavgc cambia de formato lo diagnostica con REA. Solo se activa si la pides por su nombre. | "actualiza las builds con la versión REA", "compara las dos versiones de las builds" |
 
 ## Actualizar en un dispositivo ya instalado
 
 ```bash
 claude plugin marketplace update claude-skills
 claude plugin update mis-skills@claude-skills
+claude plugin update builds-champions-rea@claude-skills
 ```
 
 ## Añadir una skill nueva
@@ -51,4 +59,7 @@ plugins/mis-skills/
   .claude-plugin/plugin.json           # manifiesto del plugin
   skills/
     <skill>/SKILL.md                   # una carpeta por skill
+plugins/builds-champions-rea/          # plugin experimental, con su propia versión
+  .claude-plugin/plugin.json
+  skills/builds-champions-rea/
 ```

@@ -1,0 +1,8 @@
+{
+  "name": "builds-champions-rea",
+  "description": "Variante experimental de builds-champions: calcula los movimientos que metavgc da al 0 % con los equipos de torneo de la propia página y diagnostica cambios de formato con REA.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Max Luque"
+  }
+}
