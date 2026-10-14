@@ -232,17 +232,24 @@ def cmd_descargar(ctx):
 
 # ----------------------------------------------------------------------------- 3. generar
 
-def moves_de_equipos(det, p, otros=frozenset()):
-    """Respaldo cuando metavgc trae los movimientos al 0 % (repertorio genérico, sin uso): los cuenta en los
-    equipos de torneo que la propia página incluye (initialDetails.teams). Busca primero el slug propio y, si no
-    aparece, los de sus otras formas: la página de Maushold Familia de Cuatro lo lista en sus equipos como
-    maushold-family-of-three. Una forma que es entrada propia del roster (`otros`) es otro Pokémon y no se usa:
-    las páginas de Farfetch'd y Mr. Mime de Galar traen equipos con los normales. El % es sobre el total de
-    huecos de movimiento, la misma escala que usa metavgc."""
+def sets_de_equipos(det, p, otros=frozenset(), con_formas=True):
+    """Sets de este Pokémon dentro de los equipos de torneo que incluye su página (initialDetails.teams). Busca
+    primero el slug propio y, si no aparece y `con_formas`, los de sus otras formas: la página de Maushold
+    Familia de Cuatro lo lista en sus equipos como maushold-family-of-three. Una forma que es entrada propia del
+    roster (`otros`) es otro Pokémon y no se usa: las páginas de Farfetch'd y Mr. Mime de Galar traen equipos
+    con los normales."""
     sets = [x for t in det.get("teams") or [] for x in t.get("pokemon") or [] if isinstance(x.get("moves"), list)]
     propios = {p["slug"], p["key"], det.get("slug"), det.get("speciesSlug")}
-    formas = {f.get("slug") for f in det.get("forms") or []} - propios - otros
-    elegidos = [x for x in sets if x.get("slug") in propios] or [x for x in sets if x.get("slug") in formas]
+    elegidos = [x for x in sets if x.get("slug") in propios]
+    if not elegidos and con_formas:
+        formas = {f.get("slug") for f in det.get("forms") or []} - propios - otros
+        elegidos = [x for x in sets if x.get("slug") in formas]
+    return elegidos
+
+def moves_de_equipos(det, p, otros=frozenset()):
+    """Respaldo cuando metavgc trae los movimientos al 0 % (repertorio genérico, sin uso). El % es sobre el
+    total de huecos de movimiento, la misma escala que usa metavgc."""
+    elegidos = sets_de_equipos(det, p, otros)
     if not elegidos:
         return None, None
     c = Counter(m for x in elegidos for m in x["moves"] if m)
@@ -250,7 +257,29 @@ def moves_de_equipos(det, p, otros=frozenset()):
     slugs = ", ".join(sorted({x["slug"] for x in elegidos}))
     return [(m, round(100 * n / total, 2)) for m, n in c.most_common()], f"{len(elegidos)} sets de equipos ({slugs})"
 
-def parse_pagina(ctx, p, otros=frozenset()):
+def habilidades_de_equipos(det, p):
+    """Respaldo cuando las habilidades de la página no son de esta forma. Solo sets con el slug propio: el fallo
+    es justo que metavgc mezcla formas (Ninetales de Alola sale con Drought, la del Ninetales normal)."""
+    elegidos = [x for x in sets_de_equipos(det, p, con_formas=False) if x.get("ability")]
+    if not elegidos:
+        return None, None
+    c = Counter(x["ability"] for x in elegidos)
+    return [(a, round(100 * n / len(elegidos), 2)) for a, n in c.most_common()], f"{len(elegidos)} sets de equipos"
+
+def habilidades_pokeapi(ctx, claves):
+    """Habilidades oficiales (slugs de PokeAPI) de cada clave, con caché en disco. Solo se guardan las respuestas
+    con datos, para reintentar las que fallen en la siguiente ejecución."""
+    ruta = os.path.join(ctx.cache, "habilidades_pokeapi.json")
+    cache = leer_json(ruta, {})
+    def bajar(k):
+        poke = http_json(f"{POKEAPI}/pokemon/{k}") or {}
+        return k, [a["ability"]["name"] for a in poke.get("abilities", [])]
+    with ThreadPoolExecutor(8) as ex:
+        cache.update({k: v for k, v in ex.map(bajar, [k for k in claves if k not in cache]) if v})
+    escribir_json(ruta, cache, crlf=False)
+    return {k: frozenset(v) for k, v in cache.items()}
+
+def parse_pagina(ctx, p, otros=frozenset(), oficiales=frozenset()):
     html = open(os.path.join(ctx.cache, "mv", p["key"] + ".html"), encoding="utf-8").read()
     data = flight(html)
     det = extract(data, "initialDetails")
@@ -262,12 +291,19 @@ def parse_pagina(ctx, p, otros=frozenset()):
     if not any(pct for _, pct in moves):
         calculados, fuente = moves_de_equipos(det, p, otros)
         moves = calculados or moves
+    # Si ninguna habilidad usada según metavgc es de esta forma en PokeAPI, la página trae las de otra forma.
+    abilities, hab_fuente = [(n["name"], n["pct"]) for n in det.get("abilities", [])], None
+    usadas = [a for a, pct in abilities if pct]
+    if oficiales and usadas and not {slugify(a) for a in usadas} & oficiales:
+        calculadas, origen = habilidades_de_equipos(det, p)
+        hab_fuente = f"metavgc da {', '.join(usadas)}; " + (f"corregida con {origen}" if calculadas else "sin equipos para corregirla")
+        abilities = calculadas or []
     return {
         "formatId": det.get("formatId"), "period": det.get("period"),
         "rawCount": det.get("rawCount") or 0, "usage": det.get("usage") or 0,
         "natures": [(n["name"], n["pct"]) for n in det.get("natures", [])],
         "items": [(n["name"], n["pct"]) for n in det.get("items", [])],
-        "abilities": [(n["name"], n["pct"]) for n in det.get("abilities", [])],
+        "abilities": abilities, "habFuente": hab_fuente,
         "moves": moves, "movesFuente": fuente,
         "pcAbility": pc.get("displayName"), "megaAbility": mega.get("displayName"),
     }
@@ -329,9 +365,10 @@ def nombre_build(item, nature, sp, moves):
         return f"Mega{(' ' + suf) if suf else ''} {r}".strip()
     return f"{r} {item}"
 
-def habilidad(d, item, ov):
+def habilidad(d, item, ov, key=None):
     abs_ = [(a, p) for a, p in d["abilities"] if p and p > 0]
-    base = abs_[0][0] if abs_ else (d["pcAbility"] or (d["abilities"][0][0] if d["abilities"] else "-"))
+    base = (ov.get("habilidades", {}).get(key) or (abs_[0][0] if abs_ else None)
+            or d["pcAbility"] or (d["abilities"][0][0] if d["abilities"] else "-"))
     if es_piedra(item):
         mega = ov.get("habilidad_piedra", {}).get(item, d["megaAbility"])
         if base == mega and d["pcAbility"]:
@@ -387,7 +424,7 @@ def builds_de(d, key, ov):
             nombre = f"{nombre} ({nature})"
         if any(b["build_name"] == nombre for b in out):
             nombre = f"{nombre_build(item, nature, evs, moves)} ({'/'.join(map(str, evs))})"
-        out.append({"build_name": nombre, "item": item, "nature": nature, "ability": habilidad(d, item, ov),
+        out.append({"build_name": nombre, "item": item, "nature": nature, "ability": habilidad(d, item, ov, key),
                     "moves": {f"move{j + 1}": m for j, m in enumerate(moves)},
                     "evs": dict(zip(STATS, (str(v) for v in evs)))})
     return out
@@ -395,10 +432,12 @@ def builds_de(d, key, ov):
 def cmd_generar(ctx):
     roster = leer_json(ctx.roster_path)["pokemon"]
     datos, entradas, sin_datos, sin_moves, pocos, formatos, de_equipos = {}, [], [], [], [], {}, []
+    hab_corregidas, hab_sin_corregir = [], []
     del_roster = {x for r in roster for x in (r["key"], r["slug"])}
+    oficiales = habilidades_pokeapi(ctx, [p["key"] for p in roster])
     for p in roster:
         try:
-            d = parse_pagina(ctx, p, del_roster)
+            d = parse_pagina(ctx, p, del_roster, oficiales.get(p["key"], frozenset()))
         except FileNotFoundError:
             d = None
         if not d or not d["natures"]:
@@ -407,6 +446,11 @@ def cmd_generar(ctx):
             continue
         datos[p["key"]] = d
         formatos[d["formatId"]] = formatos.get(d["formatId"], 0) + 1
+        if d["habFuente"] and p["key"] not in ctx.ov.get("habilidades", {}):
+            if not d["abilities"]:                     # sin habilidad fiable no se genera build
+                hab_sin_corregir.append(f"{p['display']} ({p['key']}, {d['rawCount']} muestras): {d['habFuente']}")
+                continue
+            hab_corregidas.append(f"{p['display']} ({p['key']}): {d['habFuente']} -> {d['abilities'][0][0]}")
         b = builds_de(d, p["key"], ctx.ov)
         if not b:
             sin_moves.append(f"{p['display']} ({p['key']}, {d['rawCount']} muestras)")
@@ -430,6 +474,9 @@ def cmd_generar(ctx):
     print(f"Quitados respecto al archivo anterior ({len(quitados)}): {quitados}")
     print(f"Con menos de 10 muestras ({len(pocos)}): {pocos}")
     revisar("sin datos en metavgc (se omiten)", sin_datos)
+    revisar("habilidades de otra forma en metavgc, corregidas con los equipos de su página", hab_corregidas)
+    revisar("habilidades de otra forma en metavgc y sin equipos para corregirlas: se omiten salvo que se añada "
+            "overrides.habilidades", hab_sin_corregir)
     revisar("movimientos al 0 % en metavgc, calculados de los equipos de su página (muestra pequeña)", de_equipos)
     revisar("sin movimientos ni en los equipos de su página: buscar en Pikalytics y añadir a overrides.movimientos",
             sin_moves)

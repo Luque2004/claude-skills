@@ -73,6 +73,9 @@
   "movimientos": {
     "_ayuda": "Movimientos [nombre, %] manuales; tienen prioridad. Solo hacen falta si metavgc los trae al 0 % y tampoco salen en los equipos de su página (fuente: Pikalytics)."
   },
+  "habilidades": {
+    "_ayuda": "Habilidad base fija por clave PokeAPI (p. ej. \"ninetales-alola\": \"Snow Warning\"). Solo para Pokémon cuya página de metavgc trae las habilidades de otra forma y no tiene equipos con los que corregirlas."
+  },
   "habilidad_piedra": {
     "_ayuda": "Habilidad Mega cuando una especie tiene varias piedras y la página solo informa de una.",
     "Charizardite X": "Tough Claws",

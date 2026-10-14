@@ -16,8 +16,8 @@
     {
       "name": "builds-champions-rea",
       "source": "./plugins/builds-champions-rea",
-      "description": "Variante experimental de builds-champions: movimientos al 0 % calculados de los equipos de metavgc y diagnóstico con REA.",
-      "version": "0.1.0"
+      "description": "Variante experimental de builds-champions: movimientos al 0 % y habilidades de otra forma corregidos con los equipos de metavgc, y diagnóstico con REA.",
+      "version": "0.2.0"
     }
   ]
 }
