@@ -18,7 +18,8 @@ https://www.infojobs.net/jobsearch/search-results/list.xhtml?keyword=<kw>&provin
 
 - `provinceIds=9` = provincia de Barcelona. `sinceDate`: `_24_HOURS`, `_7_DAYS`, `_15_DAYS`; quítalo para "cualquier fecha".
 - El buscador es difuso: "frontend", "programador php" y "react" devuelven casi las mismas ofertas. Palabras clave que funcionaron: "programador web junior", "desarrollador web", "wordpress", "programador php", "frontend", "react", "programador junior".
-- La página tiene dos bloques: los resultados de la búsqueda y, debajo de "Ofertas que quizá te interesen", coincidencias flojas que incluyen otras provincias. El bloque de abajo se carga al hacer **scroll con la rueda** (`computer` → `scroll`), no con `window.scrollBy`.
+- La página tiene dos bloques: los resultados de la búsqueda y, debajo de "Ofertas que quizá te interesen", coincidencias flojas que incluyen otras provincias. **La lista se carga por tramos al hacer scroll con la rueda** (`computer` → `scroll`, no `window.scrollBy`): sin scroll salen ~5-7 de 18. Haz 3 scrolls de 10 ticks con `wait` 2 s entre ellos y compara el número extraído con el del `h1` ("18 ofertas de…"). El scroll no cuenta como página nueva para el límite.
+- La marca `[rel]` del snippet no es fiable (a veces marca ofertas del bloque principal): úsala solo como pista y juzga por el lugar y el título.
 - **Popup "Buscamos ofertas para ti — Te hemos creado una alerta…"**: InfoJobs intenta crear una alerta por email en cada búsqueda nueva. Pulsa "NO, GRACIAS" salvo que el usuario haya pedido esa alerta (es configuración persistente de su cuenta).
 
 ### extraer-lista-infojobs
@@ -86,4 +87,13 @@ En la página de resultados, el interruptor "Activar alerta" (columna izquierda)
 
 ## Inscribirse
 
-Por ahora, la inscripción la hace el usuario: abre la oferta, pulsa "Inscribirme en esta oferta" y, si se pide, pega la carta de presentación. Tu parte es preparar la carta (adaptada a la oferta, sin afirmar nada que el usuario no haya confirmado, p. ej. disponibilidad para viajar) y responderle las preguntas de cribado con `respuestas`. Cuando diga "inscrito", añade la fila a `solicitudes.csv` con la URL `https://www.infojobs.net/x/x/of-i<id>` y "InfoJobs" en `estado`. El seguimiento está en "Mis ofertas".
+La página de inscripción se abre directamente con el ID: `https://www.infojobs.net/candidate/application/index.xhtml?id_oferta=<id>` (o con "Inscribirme en esta oferta" en la ficha, clic por `ref` con `find`). Si ya está inscrito, la ficha lo indica y no hay formulario. Todo cabe en una sola página:
+
+1. **Cuestionario previo de la empresa** (no siempre): radios tipo test (`name="preg_<n>"`) y preguntas abiertas (`textarea[name^=pregunta_abierta_]`, máx. 1500 caracteres). Para leerlo entero: `document.body.innerText` desde "Cuestionario previo" hasta "CV adjunto". Ejemplos reales: disponibilidad ("Inmediatamente"), coche/carné, nivel de programación/Python/BBDD/Git/IA, formación ASIX/DAM/DAW, expectativa salarial (texto libre), "qué harías ante una tecnología que no conoces". Haz estas preguntas en el lote de la sección 4.0 de SKILL.md.
+2. **Rellenar radios**: `find` con el texto exacto de la opción devuelve el `radio` y su `label`; haz clic por `ref` en el **label**. Verifica con `[...document.querySelectorAll('input[type=radio]:checked')]`.
+3. **Textos y carta**: `find` "textbox" lista los campos; la carta es el textbox "Texto de la carta:". `form_input` con su `ref` funciona (formulario JSF, no React). La opción "Crear una carta" viene marcada; no marques "Guardar como una nueva carta" salvo que el usuario lo pida (crea una carta guardada en su cuenta).
+4. **CV adjunto**: "Incluir CV adjunto" viene marcado con el último PDF subido; comprueba que es el configurado.
+5. **InfoJobs PrevIA**: muchas ofertas avisan de que "Esta empresa podría utilizar IA para una primera entrevista de idoneidad. Al inscribirte, consientes este tratamiento". Díselo al usuario siempre, junto a la tabla de pestañas: al pulsar él la confirmación, acepta ese tratamiento.
+6. **CONFIRMA TU INSCRIPCIÓN** lo pulsa el usuario (es el envío). Cada formulario de inscripción cuenta para el límite de 15-20 páginas por pase.
+
+Comprobación y registro: tras el clic del usuario, abre la ficha `of-i<id>` y mira si ya no aparece "Inscribirme en esta oferta" (o revisa "Mis ofertas"). Solo entonces añade la fila a `solicitudes.csv` con la URL `https://www.infojobs.net/x/x/of-i<id>` y "InfoJobs" + respuestas relevantes en `estado`. El seguimiento está en "Mis ofertas", que avisa cuando la empresa lee el CV.
