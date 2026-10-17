@@ -25,6 +25,10 @@ Son de terceros: no se copian a este repo, se instalan con su propio comando.
 |---|---|---|
 | [REA](https://github.com/morluto/rea) | Ingeniería inversa de webs, apps JavaScript/Electron y .NET (servidor MCP + skill `reverse-engineer-anything`). Requiere Node.js 24.11+ y Chrome. | `npx rea-agents@6.4.0 setup` → marcar solo **Claude Code** (con Espacio) → skill: **Yes** → revisar el plan → aplicar → reiniciar Claude Code |
 
+| ffmpeg | Cortar vídeo, analizar audio e imagen y sacar fotogramas (skill `editar-videos`). | `winget install Gyan.FFmpeg` |
+| faster-whisper | Transcribir la voz en local para los subtítulos (skill `editar-videos`). El modelo (1,6 GB) se descarga solo la primera vez. | `py -3 -m pip install faster-whisper` |
+| CapCut de escritorio | Donde se abren y se terminan los proyectos que crea `editar-videos`. | desde capcut.com |
+
 Instalar REA solo desde el comando de npm o desde `morluto/rea`: hay clones falsos con "instaladores".
 
 ## Skills incluidas
@@ -34,6 +38,7 @@ Instalar REA solo desde el comando de npm o desde `morluto/rea`: hay clones fals
 | `comentar-codigo` | Añade comentarios breves en español encima de cada bloque (funciones, bucles, condicionales…) sin tocar la lógica. Respeta comentarios existentes y avisa de bugs que vea. | "comenta el código", "coméntame `src/api.js`", "no entiendo este script, explícamelo con comentarios" |
 | `buscar-ofertas` | Busca ofertas en LinkedIn (y en InfoJobs) con tu sesión, las criba leyendo la descripción (años de experiencia, nivel, stack) y prepara las solicitudes ("Solicitud sencilla" o inscripción en InfoJobs con cuestionario y carta): eliges las ofertas con un solo "sí", te pregunta de golpe lo que no sepa y tú solo pulsas el envío final de cada una. Empieza cada pase revisando respuestas y fechas límite. Lee tus criterios de `busqueda.json`, tus cartas de `cartas.md` y lleva el registro en `solicitudes.csv` (fuera del repo, en tu carpeta personal, p. ej. `Documentos\BusquedaEmpleo`). | "busca ofertas junior de web", "aplica a las que encajen", "qué ofertas nuevas hay esta semana" |
 | `builds-champions` | Actualiza las builds de Pokémon Champions del bot de Discord a la regulación vigente: detecta la regulación en metavgc, añade los Pokémon nuevos del roster, quita los que dejan de ser legales, regenera el JSON en inglés y en español y los alias de `Main.py`. Las excepciones se editan en `overrides.json`. | "actualiza las builds", "ha salido regulación nueva", "mete los pokémon nuevos de champions" |
+| `editar-videos` | Edita vídeos en CapCut a partir de tomas o clips en bruto y deja dos proyectos de CapCut para elegir (A dinámico, B limpio). Hace TikToks hablados con subtítulos sincronizados (Whisper), sin silencios ni tomas falsas, y montajes de videojuegos (clips de Medal) o entrenos cortados a los beats de la música de CapCut. Copia el estilo de vídeos de referencia o de proyectos ya editados. Trabaja con copias en `Documentos\editar-videos\videos` (fuera del repo) y nunca toca proyectos que ya existan. | "me han pasado vídeos para editar", "hazme un montaje de gym con esta canción", "subtitula este TikTok" |
 | `builds-champions-rea` *(plugin aparte)* | Copia experimental de `builds-champions`: cuando metavgc da los movimientos al 0 % o las habilidades de otra forma (Ninetales de Alola con Drought), los corrige con los equipos de torneo de la propia página, y si metavgc cambia de formato lo diagnostica con REA. Solo se activa si la pides por su nombre. | "actualiza las builds con la versión REA", "compara las dos versiones de las builds" |
 
 ## Actualizar en un dispositivo ya instalado
