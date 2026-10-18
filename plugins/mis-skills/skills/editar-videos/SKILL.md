@@ -50,7 +50,7 @@ Usa `py -3` para Python (`python` no está en el PATH). Los scripts están en `s
 
    Escribe la ficha `estilo.md` en la carpeta del encargo y enséñasela al usuario en 4–6 líneas antes de montar.
 4. **Analizar el material** según el tipo: [references/tiktok-hablado.md](references/tiktok-hablado.md) o [references/montajes.md](references/montajes.md).
-5. **Planear.** Escribe `plan-A.json` y `plan-B.json` en la carpeta del encargo (formato en [references/capcut-formato.md](references/capcut-formato.md)). Pruébalos con `crear_proyecto.py plan-A.json --comprobar`.
+5. **Planear.** Escribe `plan-A.json` y `plan-B.json` en la carpeta del encargo (formato en [references/capcut-formato.md](references/capcut-formato.md)). Los textos cumplen las reglas de subtítulos de [references/estilos.md](references/estilos.md). Pruébalos con `crear_proyecto.py plan-A.json --comprobar`: avisa si algún texto dura menos de 1 s, cae en la zona que tapa TikTok o tiene líneas demasiado largas. Corrige los avisos antes de crear, salvo las palabras de impacto.
 6. **Crear** con CapCut cerrado: `crear_proyecto.py plan-A.json` y lo mismo con B. Nombres: `<encargo> · A dinámico` y `<encargo> · B limpio`.
 7. **Entregar.** Para cada versión, di qué hace (duración, cortes, qué se ha quitado) y qué tiene que revisar el usuario: nombres raros en los subtítulos, el gancho y la música. Él exporta desde CapCut. Ajusta según lo que te diga.
 

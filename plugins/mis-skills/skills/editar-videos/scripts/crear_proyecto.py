@@ -184,10 +184,20 @@ def main():
 
     # Textos: cada uno en la primera pista de texto donde no se solape con otro
     fuente = fuente_capcut()
-    pistas_t = []
+    pistas_t, avisos = [], []
     for x in sorted(plan.get("textos", []), key=lambda x: float(x["inicio"])):
         ini, fin = float(x["inicio"]), float(x["fin"])
         txt, tam = x["texto"], float(x.get("tam", 9))
+        # Reglas de subtítulos (references/estilos.md): solo avisan, no bloquean
+        corto = txt.replace("\n", " ")[:24]
+        if fin - ini < 0.95:
+            avisos.append(f"'{corto}' dura {fin - ini:.2f} s: el mínimo es 1 s (0,6 s si es una palabra de impacto)")
+        if alto > ancho:  # lienzo vertical: zonas que tapa la interfaz de TikTok
+            y = float(x.get("y", -0.4))
+            if y < -0.5 or y > 0.75:
+                avisos.append(f"'{corto}' está en y={y}: lo tapa la interfaz de TikTok (usa entre -0,5 y 0,75)")
+            if any(len(linea) > 20 for linea in txt.split("\n")):
+                avisos.append(f"'{corto}' tiene líneas de más de 20 caracteres: córtalo en dos subtítulos")
         color, borde = x.get("color", "#FFFFFF"), x.get("borde", "#000000")
         tm = copy.deepcopy(texto_plant)
         tm["id"] = nid()
@@ -248,6 +258,8 @@ def main():
 
     resumen = (f"{nombre} | {cont['duration'] / S:.1f} s | {len(pista_v['segments'])} clips | "
                f"{sum(len(p['segments']) for p in pistas_t)} textos en {len(pistas_t)} pistas | fuente {'ok' if fuente else 'no encontrada'}")
+    if avisos:
+        print(f"{len(avisos)} avisos de subtítulos:\n  - " + "\n  - ".join(avisos))
     if a.comprobar:
         print(f"Comprobado (no está en CapCut): {resumen}\nCarpeta temporal: {dst}")
         return

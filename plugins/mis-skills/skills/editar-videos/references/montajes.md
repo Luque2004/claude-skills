@@ -24,7 +24,7 @@ La música de la biblioteca de CapCut tiene dos ventajas: CapCut guarda sus beat
 - **Orden**: el mejor clip primero (el gancho, 1–2 s), luego de menos a más, y el mejor de todos en el drop.
 - **Encuadre vertical**: `llenar` recorta el centro (×3,16 para un vídeo 16:9). Si la acción no está en el centro (HUD, minimapa), propón para B `"llenar": false`, que enseña la imagen entera con fondo negro.
 - **Pico de la mejor jugada**: zoom de 1,2 en A y cámara lenta (`"velocidad": 0.5`) en B.
-- **Textos**: los que dicte el usuario ("1v4", "ACE").
+- **Textos**: los que dicte el usuario ("1v4", "ACE"). En los montajes también valen las reglas de subtítulos de [estilos.md](estilos.md).
 
 ## Entrenamientos
 
